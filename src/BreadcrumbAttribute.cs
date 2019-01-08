@@ -13,7 +13,7 @@ namespace SmartBreadcrumbs
         public virtual string Action { get; internal set; }
 
         /// <summary>
-        /// If FromController is empty and FromAction is just an {action} it will automaticly add the current controller
+        /// If FromController is empty and FromAction is just an {action} it will automatically add the current controller
         /// You syntax {controller}.{action} or user FromController instead
         /// </summary>
         public virtual string FromAction { get; set; }
@@ -23,9 +23,6 @@ namespace SmartBreadcrumbs
         /// </summary>
         public virtual string FromController { get; set; }
 
-        public virtual bool CacheTitle { get; set; }
-
-        public bool OverwriteOnExactMatch { get; set; }
 
         public virtual bool Default => false;
 

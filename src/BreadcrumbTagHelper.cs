@@ -41,7 +41,8 @@ namespace SmartBreadcrumbs
             string controller = ViewContext.ActionDescriptor.RouteValues["controller"];
 
             var nodeKey = $"{controller}.{action}";
-            var node = ViewContext.ViewData["BreadcrumbNode"] as BreadcrumbNode ?? _breadcrumbsManager.GetNode(nodeKey);
+            var node = _breadcrumbsManager.GetNode(nodeKey);
+          
 
             output.TagName = _breadcrumbsManager.Options.TagName;
             
@@ -57,10 +58,8 @@ namespace SmartBreadcrumbs
 
             if (node != null)
             {
-                var fetchTitleFromViewData = node.CacheTitle && node.Title.StartsWith("ViewData.");
+                  node.Title = ExtractTitleFromModel(node.GetOriginTitle());
                 
-                if (fetchTitleFromViewData || node.OverwriteTitleOnExactMatch)
-                    node.Title = ExtractTitle(node.GetOriginTitle());
 
                 sb.Insert(0, GetLi(node.Title, node.GetUrl(_urlHelper),true));
 
@@ -98,13 +97,30 @@ namespace SmartBreadcrumbs
 
         }
 
-        private string ExtractTitle(string title)
-        {
-            if (!title.StartsWith("ViewData."))
-                return title;
 
-            string key = title.Substring(9);
-            return ViewContext.ViewData.ContainsKey(key) ? ViewContext.ViewData[key].ToString() : key;
+
+        private string ExtractTitleFromModel(string title)
+        {
+            var type = ViewContext.ViewData.Model?.GetType();
+
+            if (type == null)
+            {
+                return title;
+            }
+
+            var property = type.GetProperty(title);
+            if (property != null)
+            {
+                return (string) property.GetValue(ViewContext.ViewData.Model);
+            }
+
+            var method = type.GetMethod(title);
+            if (method != null)
+            {
+                return (string) method.Invoke(ViewContext.ViewData.Model,null);
+            }
+
+            return title;
         }
 
         private string GetClass(string classes)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,18 +27,17 @@ namespace BreadCrumbsTagHelperExample
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.UseBreadcrumbs(GetType().Assembly);
 
-            //services.UseBreadcrumbs(GetType().Assembly, options =>
-            //{
-                
-            //    TagName = "nav";
-            //    TagClasses = "";
-            //    OlClasses = "breadcrumb";
-            //    LiClasses = "breadcrumb-item";
-            //    ActiveLiClasses = "breadcrumb-item active";
-            //    SeparatorElement = "<li class=\"separator\">/</li>";
-            //});
+            services.UseBreadcrumbs(GetType().Assembly, options => 
+            {
+
+                options.TagName = "nav";
+                options.TagClasses = "";
+                options.OlClasses = "breadcrumb";
+                options.LiClasses = "breadcrumb-item";
+                options.ActiveLiClasses = "breadcrumb-item active";
+                options.SeparatorElement = "<li class=\"separator\">/</li>";
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

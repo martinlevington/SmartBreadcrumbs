@@ -1,5 +1,3 @@
-using System;
-
 namespace BreadCrumbsTagHelperExample.Models
 {
     public class ErrorViewModel

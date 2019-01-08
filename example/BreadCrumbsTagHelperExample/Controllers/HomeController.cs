@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BreadCrumbsTagHelperExample.Models;
 using SmartBreadcrumbs;
@@ -15,22 +11,34 @@ namespace BreadCrumbsTagHelperExample.Controllers
         [DefaultBreadcrumb("My home")]
         public IActionResult Index()
         {
-            return View();
+
+            var viewModel = new ExampleViewModel();
+            viewModel.Title = "Nice new Home Title";
+
+            return View(viewModel);
         }
 
-        [Breadcrumb("ViewData.Title", FromAction = "Home.Index")]
+        // this is the name of the property/method in the view model to get the value from - if not found the this is used as the title
+        [Breadcrumb("Title", FromAction = "Home.Index")]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
 
-            return View();
+            var viewModel = new ExampleViewModel();
+            viewModel.Title = "Nice new About Custom Title";
+
+            return View(viewModel);
         }
 
+        [Breadcrumb("GetTitle", FromAction = "Home.Index")]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
 
-            return View();
+            var viewModel = new ExampleViewModel();
+            viewModel.Title = "Contact Title";
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

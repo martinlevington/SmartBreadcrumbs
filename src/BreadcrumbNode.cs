@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace SmartBreadcrumbs
 {
@@ -19,10 +18,6 @@ namespace SmartBreadcrumbs
 
         public object RouteValues { get; set; }
 
-        public bool CacheTitle { get; set; }
-
-        public bool OverwriteTitleOnExactMatch { get; set; }
-
         #endregion
 
         public BreadcrumbNode(BreadcrumbAttribute attr)
@@ -32,8 +27,7 @@ namespace SmartBreadcrumbs
             string[] tmp = attr.Action.Split('.');
             Controller = tmp[0];
             Action = tmp[1];
-            CacheTitle = attr.CacheTitle;
-            OverwriteTitleOnExactMatch = attr.OverwriteOnExactMatch;
+      
         }
 
         public BreadcrumbNode(string title, string action, string controller, object routeValues = null, BreadcrumbNode parent = null)
